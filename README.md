@@ -4,6 +4,8 @@ DeployMan is a command line tool to deploy [Docker images](https://www.docker.co
 
 **Note:** DeployMan is an experimental prototyp created for my master thesis about *porting an enterprise OSGi application to a PaaS*. It is not production-ready and was used for academic reasearch solomly. However, sharing what I did will maybe help others and shoult be the purpose of all academic work. Enjoy.
 
+For more information see: [www.tuhrig.de](www.tuhrig.de)
+
 ## Features
 
 - A command line interface to start new Docker stacks on EC2 instances.
@@ -30,7 +32,7 @@ Run the web interface  on http://localhost:4567 by:
 
 After Deploy-Man was build successfully, you can use Docker to build an image of DeployMan's web interface:
 
-    docker build -t infa/deployman .
+    docker build -t tuhrig/deployman .
 
 ## Usage (with an easy example)
 
@@ -129,15 +131,15 @@ In order to run the example from above, we need to create two configurations: a 
 
     DEPLOYMAN_REPO/
     |------------- configs/
-                   |------------- UI-Nginx/
-                                  |------------- config/
-                                                 |------------- nginx.conf
-                                  |------------- static/
-                                                 |------------- index.html
+    |              |------------- UI-Nginx/
+    |                             |------------- config/
+    |                             |              |------------- nginx.conf
+    |                             |------------- static/
+    |                                            |------------- index.html
     |------------- formations/
-                   |------------- nginx.json
+    |              |------------- nginx.json
     |------------- images/
-                   |------------- (empty)
+    |              |------------- (empty)
     |------------- setups/
                    |------------- (empty)
 

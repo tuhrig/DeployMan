@@ -3,6 +3,13 @@
  */
 package com.informatica.pim.cloud.launch;
 
+import static com.informatica.pim.cloud.DeployMan.EC2_INSTANCE_KEY;
+import static com.informatica.pim.cloud.DeployMan.REPO_PROFILE;
+import static com.informatica.pim.cloud.DeployMan.SLASH;
+import static com.informatica.pim.cloud.DeployMan.getUserProperty;
+import static com.informatica.pim.cloud.DeployMan.readUserProperties;
+import static com.informatica.pim.cloud.DeployMan.sdf;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
@@ -53,8 +60,6 @@ import com.informatica.pim.cloud.launch.formation.Formation;
 import com.informatica.pim.cloud.launch.formation.Machine;
 import com.informatica.pim.cloud.launch.formation.Scaling;
 import com.informatica.pim.cloud.repo.LocaleRepository;
-
-import static com.informatica.pim.cloud.DeployMan.*;
 
 /**
  * This class launches formations. It can either launch a EC2 virtual machine setup or a RDS
@@ -173,7 +178,7 @@ public class Launcher {
     Dimension dimension = new Dimension().withName("AutoScalingGroupName") //$NON-NLS-1$
         .withValue(scaling.getGroup());
 
-    List actions = new ArrayList();
+    List<String> actions = new ArrayList<>();
     actions.add(result.getPolicyARN());
 
     PutMetricAlarmRequest upRequest =

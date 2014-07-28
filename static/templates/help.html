@@ -1,0 +1,59 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h1>Help <small>Help and documentation</small></h1>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+
+    <div class="col-md-3"></div>
+
+    <div class="col-md-6">
+
+      <h1>Help</h1>
+
+      <h2>Remote and Locale</h2>
+
+      <p>Remote and locale are two important concepts when using Deploy-Man. Some
+      components (as described in the next section) are remote, while other
+      componets are locale.</p>
+
+      <p>A <b>remote component</b> (an Docker image or a configuration folder) is not
+      on the locale machine (where this web interface runs), but on an Amazon
+      S3 bucket. If you have such a component on your laptop, you need to upload it
+      to S3 before you can use it. To upload a file you can use Deploy-Man or the AWS
+      web console.</p>
+
+      <p>A <b>locale component</b> (a formation or a database setup) is always on the
+      locale machine (where this web interface runs). Locale components doesn't need to
+      be uploaded to Amazon, since they are only used inside Deploy-Man.</p>
+
+      <h2>Basic componentes</h2>
+
+      <h3>Images</h3>
+
+      <p>Images are Docker images saved as tarballs and uploaded to an
+      Amazon S3 bucket. This means an image must always be in the
+      S3 bucket. A local image must be uploaded to the S3 bucket first.
+      Every image has a unique name by which it is indentifies. When a
+      machine with a certain image is started, the image is copied to the
+      machine, loaded into Docker and started.</p>
+
+      <p>An image usually goes together with a configuration.</p>
+
+      <h3>Configs</h3>
+
+      Configs are folders with configurations (e.g. property files) uploaded to an
+      Amazon S3 bucket. When a machine is started with a certain configuration,
+      the configuration folder is copied to the machine and mounted into the Docker
+      container specified in the formation file.
+
+    </div>
+
+    <div class="col-md-3"></div>
+
+  </div>
+</div>

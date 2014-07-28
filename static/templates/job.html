@@ -1,0 +1,37 @@
+<div class="row">
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header">
+            <h1>Job <small>Started formation</small></h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" ng-controller="JobCtrl">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Job
+            </div>
+            <div class="panel-body">
+                A job represents a started formation. A job might has finished or not. It cannot be
+                canceled.
+            </div>
+        </div>
+
+        <table class="table table-hover table-condensed" >
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Formation</th>
+                </tr>
+            </thead>
+            <tr>
+                <td><a href="#/job-view/{{job.id}}">{{job.id}}</a></td>
+                <td>{{job.formation.name}}</td>
+            </tr>
+        </table>
+
+        <pre>{{job.jobConsole.builder}}</pre>
+    </div>
+</div>

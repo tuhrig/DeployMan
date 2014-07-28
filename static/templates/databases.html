@@ -1,0 +1,33 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header">
+            <h1>Databases <small>All RDS databases</small></h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-hover table-condensed" ng-controller="DatabasesCtrl">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Instance class</th>
+                    <th>Engine</th>
+                    <th>Status</th>
+                    <th>Address</th>
+                    <th>Port</th>
+                    <th>Created</th>
+                </tr>
+            </thead>
+            <tr ng-repeat="database in databases">
+                <td>{{database.dBInstanceIdentifier}}</td>
+                <td>{{database.dBInstanceClass}}</td>
+                <td>{{database.engine}}</td>
+                <td>{{database.dBInstanceStatus}}</td>
+                <td>{{database.endpoint.address}}</td>
+                <td>{{database.endpoint.port}}</td>
+                <td>{{database.instanceCreateTime}}</td>
+            </tr>
+        </table>
+    </div>
+</div>

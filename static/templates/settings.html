@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-header">
+            <h1>Settings <small>Deploy-Man settings</small></h1>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                Settings
+            </div>
+            <div class="panel-body">
+                The settings define the main configuration for Deploy-Man. They
+                are stored in a common Java properties file. So each setting is
+                a simple key-value pair. While you can change the values, you
+                cannot change the keys since they are required in Deploy-Man.
+            </div>
+        </div>
+
+        <form role="form">
+            <fieldset disabled>
+                <div class="form-group">
+                    <table class="table table-hover table-condensed" ng-controller="SettingsCtrl">
+                        <thead>
+                            <tr>
+                                <th>Key</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="setting in settings">
+                            <td>{{setting.key}}</td>
+                            <td><input type="text" id="disabledTextInput" class="form-control" placeholder="{{setting.value}}"></td>
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>

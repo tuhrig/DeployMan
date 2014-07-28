@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="page-header">
+      <h1>Images <small>Available Docker images</small></h1>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            Images
+        </div>
+        <div class="panel-body">
+            Images are Docker images, saved and uploaded to an AWS S3 bucket. They are
+            the basic unit of deployment. Each image contains a single application and
+            can be copied and started on any Linux machine. A machine can run multiple
+            images and even multiple instances of a single image.
+        </div>
+    </div>
+
+    <table class="table table-hover table-condensed" ng-controller="ImagesCtrl">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Bucket</th>
+          <th>Last modified</th>
+          <th>AWS Owner</th>
+          <th>Size</th>
+        </tr>
+      </thead>
+      <tr ng-repeat="(key, image) in images">
+        <td><pre><a href="{{key}}">{{image.key}}</a></pre></td>
+        <td>{{image.bucketName}}</td>
+        <td>{{image.lastModified}}</td>
+        <td>{{image.owner.displayName}}</td>
+        <td>{{image.size | bytes}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,60 @@
+<html ng-app="deploymanApp">
+    <head>
+        <meta charset="utf8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Deploy-Man Web</title>
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="js/angular-loading-bar-0.3.0/loading-bar.min.css">
+        <link rel="stylesheet" href="css/docs.min.css">
+        <link rel="stylesheet" href="css/deployman.css">
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+        
+    </head>
+    <body>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular-route.js"></script>
+        <script src="js/angular-loading-bar-0.3.0/loading-bar.min.js"></script>
+        <script src="js/ui-bootstrap-tpls-0.11.0.min.js"></script>
+        <script src="js/deployman.js"></script>
+        <script>
+            $('.collapse').collapse()
+        </script>
+
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">Deploy-Man</a>
+                </div>
+                <!--<ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">Pages <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#/instances-view">Instances</a></li>
+                            <li><a href="#/databases-view">Databases</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#/images-view">Images</a></li>
+                            <li><a href="#/configs-view">Configs</a></li>
+                            <li><a href="#/formations-view">Formations</a></li>
+                            <li><a href="#/setups-view">Setups</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#/settings-view">Settings</a></li>
+                            <li><a href="#/routes-view">Routes</a></li>
+                            <li><a href="#/configs-view">Logs</a></li>
+                        </ul>
+                    </li>
+                </ul>-->
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div ng-view></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

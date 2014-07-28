@@ -1,6 +1,6 @@
 # DeployMan
 
-DeployMan is a command line tool to deploy Docker images to Amazon Web Services. 
+DeployMan is a command line tool to deploy [Docker images](https://www.docker.com) to [Amazon Web Services](http://aws.amazon.com). 
 
 **Note:** DeployMan is an experimental prototyp created for my master thesis about *porting an enterprise OSGi application to a PaaS*. It is not production-ready and was used for academic reasearch solomly. However, sharing what I did will maybe help others and shoult be the purpose of all academic work. Enjoy.
 

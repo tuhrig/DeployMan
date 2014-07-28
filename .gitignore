@@ -1,0 +1,5 @@
+/target/
+/bin/
+/.svn/
+/.settings/
+/dependency-reduced-pom.xml

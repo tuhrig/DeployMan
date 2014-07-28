@@ -1,0 +1,275 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>DeployMan</groupId>
+    <artifactId>DeployMan</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0.0</version>
+
+    <name>Deploy-Man</name>
+
+    <description>
+        Deploy-Man is a Java tool to deploy Docker images to AWS.
+        It provides a command line interface (CLI) and a web
+        interface. The tool is based on images, configurations,
+        setups and formations. For more information see the
+        README.md file in this project.
+
+        To package this project run:
+            mvn package
+    </description>
+
+    <repositories>
+      <repository>
+        <id>oss</id>
+        <url>https://oss.sonatype.org/content/groups/public</url>
+      </repository>
+      <repository>
+        <id>psmith</id>
+        <name>psmith</name>
+        <url>http://people.apache.org/~psmith/logging.apache.org/repo</url>
+      </repository>
+    </repositories>
+    
+    <dependencies>
+
+        <dependency>
+          <groupId>org.apache.logging</groupId>
+          <artifactId>apache-jul-log4j-bridge</artifactId>
+          <version>1.0.0-SNAPSHOT</version>
+          <exclusions>
+            <exclusion>
+              <groupId>log4j</groupId>
+              <artifactId>apache-log4j-component</artifactId>
+            </exclusion>
+          </exclusions>
+        </dependency>
+
+        <dependency>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+          <version>1.2.17</version>
+        </dependency>
+
+        <dependency>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+          <version>1.7.6</version>
+        </dependency>
+
+        <!-- Docker remote API client for Java -->
+        <dependency>
+          <groupId>com.github.docker-java</groupId>
+          <artifactId>docker-java</artifactId>
+          <version>0.9.0</version>
+        </dependency>
+
+        <!-- AWS client for Java -->
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk</artifactId>
+            <version>1.7.5</version>
+            <type>jar</type>
+        </dependency>
+
+        <!-- Command line argument parser -->
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>20040117.000000</version>
+            <type>jar</type>
+        </dependency>
+
+        <!-- SSH client -->
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>0.1.51</version>
+        </dependency>
+
+        <!-- Web framework -->
+        <dependency>
+          <groupId>com.sparkjava</groupId>
+          <artifactId>spark-core</artifactId>
+          <version>2.0.0</version>
+        </dependency>
+
+        <!-- Web framework authentication -->
+        <dependency>
+            <groupId>com.qmetric</groupId>
+            <artifactId>spark-authentication</artifactId>
+            <version>1.1</version>
+        </dependency>
+
+        <!-- Parse and create JSON -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+        </dependency>
+
+        <!-- -->
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
+        </dependency>
+
+        <!-- Used to run database setups written in ANT -->
+        <dependency>
+            <groupId>org.apache.ant</groupId>
+            <artifactId>ant</artifactId>
+            <version>1.9.3</version>
+        </dependency>
+
+        <!-- -->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.9</version>
+        </dependency>
+
+        <!-- -->
+        <dependency>
+            <groupId>commons-vfs</groupId>
+            <artifactId>commons-vfs</artifactId>
+            <version>20050307052300</version>
+        </dependency>
+
+        <!-- Auto completion -->
+        <dependency>
+          <groupId>jline</groupId>
+          <artifactId>jline</artifactId>
+          <version>2.11</version>
+        </dependency>
+
+        <!-- Tables -->
+        <dependency>
+          <groupId>btc</groupId>
+          <artifactId>ascii-table</artifactId>
+          <version>1.0</version>
+          <scope>system</scope>
+          <systemPath>${basedir}/libs/btc-ascii-table/btc-ascii-table-1.0.jar</systemPath>
+        </dependency>
+        
+        <dependency>
+          <groupId>com.google.guava</groupId>
+          <artifactId>guava</artifactId>
+          <version>17.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- Since Deploy-Man is a Java 8 project we need to
+            install Java 8 support -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                   <source>1.8</source>
+                   <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <!-- Build a JAR file with all Java dependencies
+            in it. This JAR file is executable, so it can be
+            launched on the command line with
+                            java -jar NAME_OF_FILE.jar
+            -->
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <executions>
+
+                    <!-- Build the JAR-file with the command line interface -->
+
+                    <execution>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <finalName>Deploy-Man-Cli</finalName>
+                            <archive>
+                                <manifest>
+                                    <mainClass>com.informatica.pim.cloud.interfaces.CommandLineInterface</mainClass>
+                                    <addClasspath>true</addClasspath>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                        <id>make-assembly-cli</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+
+                    <!-- Build the JAR-file with the web interface -->
+
+                    <execution>
+                        <configuration>
+                            <appendAssemblyId>false</appendAssemblyId>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
+                            <finalName>Deploy-Man-Web</finalName>
+                            <archive>
+                                <manifest>
+                                    <mainClass>com.informatica.pim.cloud.interfaces.WebInterface</mainClass>
+                                    <addClasspath>true</addClasspath>
+                                </manifest>
+                            </archive>
+                        </configuration>
+                        <id>make-assembly-web</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+
+                </executions>
+            </plugin>
+
+            <!-- Deploy-Man needs some resource files outside the JAR file.
+            E.g. properties and static files to serve via the web interface.
+            These files are copied in this step. -->
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${basedir}/target</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>/</directory>
+                                    <include>deployman.properties</include>
+                                    <include>title.txt</include>
+                                    <include>README.md</include>
+                                    <include>dm.bat</include>
+                                    <include>Dockerfile</include>
+                                    <include>Images/*.*</include>
+                                    <include>static/</include>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>

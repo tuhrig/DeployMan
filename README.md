@@ -73,7 +73,7 @@ DeployMan organizes it files in a repository, which is a folder on your local di
 
 Images and configurations are stored on S3. Formations and setups are stored locally. 
 
-![](Images/Repository.png)
+![](screenshots/Repository.png)
 
 To initialize a fresh repository, run the command line interface: 
 

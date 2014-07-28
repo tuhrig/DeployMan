@@ -1,0 +1,1 @@
+cat {{home.directory}}/{{tarball.name}} | docker import - {{tarball.name}}:latest

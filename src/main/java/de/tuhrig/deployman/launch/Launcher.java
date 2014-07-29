@@ -70,9 +70,9 @@ import de.tuhrig.deployman.repo.LocaleRepository;
  * @author tuhrig
  */
 public class Launcher {
-  public static final String HOME = "/home/ubuntu"; //$NON-NLS-1$
-  public static final String DEPLOYMENT_LOG_FILE = HOME + "/deployman.log"; //$NON-NLS-1$
-  public static final String DOCKER_LOG_FILE = HOME + "/docker.log"; //$NON-NLS-1$
+  public static final String HOME = "/home/ubuntu";
+  public static final String DEPLOYMENT_LOG_FILE = HOME + "/deployman.log";
+  public static final String DOCKER_LOG_FILE = HOME + "/docker.log";
 
   private Ec2 ec2Client = new Ec2();
   private Console console;
@@ -91,7 +91,7 @@ public class Launcher {
   }
 
   public void run(Formation formation) {
-    this.console.writeNl("Start formation " + formation.getFile()); //$NON-NLS-1$
+    this.console.writeNl("Start formation " + formation.getFile());
 
     DBInstance dbInstance = null;
     Instance instance = null;
@@ -130,7 +130,7 @@ public class Launcher {
    * print the starting instances
    */
   private List<Instance> runAutoScalingLaunch(Formation formation) {
-    this.console.write("Run auto scaling..."); //$NON-NLS-1$
+    this.console.write("Run auto scaling...");
 
     Machine machine = formation.getMachine();
     Scaling scaling = machine.getScaling();
@@ -140,9 +140,9 @@ public class Launcher {
     try {
       CreateLaunchConfigurationRequest request = createLaunchConfigurationRequest(formation);
       autoScaling.createLaunchConfiguration(request);
-      this.console.write("Created launch configuration " + scaling.getName()); //$NON-NLS-1$
+      this.console.write("Created launch configuration " + scaling.getName());
     } catch (AlreadyExistsException e) {
-      this.console.write("Launch configuration " + scaling.getName() + " already exists"); //$NON-NLS-1$ //$NON-NLS-2$
+      this.console.write("Launch configuration " + scaling.getName() + " already exists"); //$NON-NLS-2$
     }
 
     //
@@ -152,9 +152,9 @@ public class Launcher {
     try {
       CreateAutoScalingGroupRequest request = createAutoScalingRequest(scaling);
       autoScaling.createAutoScalingGroup(request);
-      this.console.write("Created auto scaling group " + scaling.getGroup()); //$NON-NLS-1$
+      this.console.write("Created auto scaling group " + scaling.getGroup());
     } catch (AlreadyExistsException e) {
-      this.console.write("Auto scaling group " + scaling.getGroup() + " already exists"); //$NON-NLS-1$ //$NON-NLS-2$
+      this.console.write("Auto scaling group " + scaling.getGroup() + " already exists"); //$NON-NLS-2$
     }
 
     //
@@ -164,11 +164,11 @@ public class Launcher {
     PutScalingPolicyRequest request =
         new PutScalingPolicyRequest().withAutoScalingGroupName(scaling.getGroup())
             .withPolicyName(scaling.getPolicy()).withScalingAdjustment(1)
-            .withAdjustmentType("ChangeInCapacity"); //$NON-NLS-1$
+            .withAdjustmentType("ChangeInCapacity");
 
     PutScalingPolicyResult result = autoScaling.putScalingPolicy(request);
 
-    this.console.write("Put scaling policy " + scaling.getPolicy()); //$NON-NLS-1$
+    this.console.write("Put scaling policy " + scaling.getPolicy());
 
     //
     //
@@ -176,18 +176,15 @@ public class Launcher {
 
     // Scale Up
 
-    Dimension dimension = new Dimension().withName("AutoScalingGroupName") //$NON-NLS-1$
-        .withValue(scaling.getGroup());
+    Dimension dimension =
+        new Dimension().withName("AutoScalingGroupName").withValue(scaling.getGroup());
 
     List<String> actions = new ArrayList<>();
     actions.add(result.getPolicyARN());
 
     PutMetricAlarmRequest upRequest =
-        new PutMetricAlarmRequest()
-            .withAlarmName(scaling.getAlarm())
-            .withMetricName("CPUUtilization") //$NON-NLS-1$
-            .withDimensions(dimension)
-            .withNamespace("AWS/EC2") //$NON-NLS-1$
+        new PutMetricAlarmRequest().withAlarmName(scaling.getAlarm())
+            .withMetricName("CPUUtilization").withDimensions(dimension).withNamespace("AWS/EC2")
             .withComparisonOperator(ComparisonOperator.GreaterThanThreshold)
             .withStatistic(Statistic.Average).withUnit(StandardUnit.Percent).withThreshold(60d)
             .withPeriod(300).withEvaluationPeriods(2).withAlarmActions(actions);
@@ -195,7 +192,7 @@ public class Launcher {
     AmazonCloudWatchClient cloudWatch = new CloudWatch().getClient();
     cloudWatch.putMetricAlarm(upRequest);
 
-    this.console.write("Put alarm " + scaling.getAlarm()); //$NON-NLS-1$
+    this.console.write("Put alarm " + scaling.getAlarm());
     this.console.newLine();
 
     List<Instance> instances = new ArrayList<>();
@@ -235,7 +232,7 @@ public class Launcher {
     return new CreateAutoScalingGroupRequest().withAutoScalingGroupName(scaling.getGroup())
         .withLaunchConfigurationName(scaling.getName()).withAvailabilityZones(scaling.getZone())
         .withMaxSize(scaling.getMax()).withMinSize(scaling.getMin())
-        .withLoadBalancerNames(scaling.getLb()).withHealthCheckType("EC2") //$NON-NLS-1$
+        .withLoadBalancerNames(scaling.getLb()).withHealthCheckType("EC2")
         .withHealthCheckGracePeriod(300).withDefaultCooldown(600);
   }
 
@@ -249,10 +246,10 @@ public class Launcher {
     DBInstance dbInstance = null;
 
     if (rdsClient.databaseExists(database.getInstanceIdentifier())) {
-      this.console.writeNl("Database already exists"); //$NON-NLS-1$
+      this.console.writeNl("Database already exists");
       dbInstance = rdsClient.getDatabase(database.getInstanceIdentifier());
     } else {
-      this.console.writeNl("Create database"); //$NON-NLS-1$
+      this.console.writeNl("Create database");
 
       CreateDBInstanceRequest request =
           new CreateDBInstanceRequest().withEngine(database.getEngine())
@@ -270,9 +267,9 @@ public class Launcher {
       dbInstance = rdsClient.getClient().createDBInstance(request);
     }
 
-    this.console.writeNl("Starting..."); //$NON-NLS-1$
+    this.console.writeNl("Starting...");
 
-    waitForDatabaseState(dbInstance.getDBInstanceIdentifier(), "available"); //$NON-NLS-1$
+    waitForDatabaseState(dbInstance.getDBInstanceIdentifier(), "available");
 
     // sleep 10 seconds to get it really ready...
     // no idea why the state 'available isn't enough
@@ -294,7 +291,7 @@ public class Launcher {
     // if ( true )
     // return null;
 
-    BlockDeviceMapping volumn = this.ec2Client.getBlockDeviceMapping("/dev/sda1", 20); //$NON-NLS-1$
+    BlockDeviceMapping volumn = this.ec2Client.getBlockDeviceMapping("/dev/sda1", 20);
     IamInstanceProfileSpecification profil =
         this.ec2Client.getIamInstanceProfileSpecification(getUserProperty(REPO_PROFILE));
 
@@ -308,9 +305,9 @@ public class Launcher {
 
     String instanceId = runInstance(request);
 
-    this.console.writeNl("Starting..."); //$NON-NLS-1$
+    this.console.writeNl("Starting...");
 
-    waitForInstanceState(instanceId, "running"); //$NON-NLS-1$
+    waitForInstanceState(instanceId, "running");
     assigneIpIfAvailable(instanceId, machine);
     assigneName(instanceId, machine);
 
@@ -350,11 +347,12 @@ public class Launcher {
   // {
   // Properties containerProperties = getContainerProperties( container, index );
   //
-  //      CloudInitScript script = new CloudInitScript( "# container init" ).withProperties( containerProperties ) //$NON-NLS-1$
-  //                                                                        .withFile( "copy_image.sh" ) //$NON-NLS-1$
-  //                                                                        .withFile( "copy_config.sh" ) //$NON-NLS-1$
-  //                                                                        .withFile( "docker_load.sh" ) //$NON-NLS-1$
-  //                                                                        .withFile( "sync_config.sh" ) //$NON-NLS-1$
+  // CloudInitScript script = new CloudInitScript( "# container init" ).withProperties(
+  // containerProperties )
+  // .withFile( "copy_image.sh" )
+  // .withFile( "copy_config.sh" )
+  // .withFile( "docker_load.sh" )
+  // .withFile( "sync_config.sh" )
   // .withCommand( container.getCommand() );
   //
   // initScript = initScript.withScript( script );
@@ -363,7 +361,7 @@ public class Launcher {
   // index++;
   // }
   //
-  //    CloudInitScript script = new CloudInitScript( "# done" ).withFile( "final_message.sh" ); //$NON-NLS-1$ //$NON-NLS-2$
+  //    CloudInitScript script = new CloudInitScript( "# done" ).withFile( "final_message.sh" );  //$NON-NLS-2$
   // return initScript.withScript( script );
   // }
 
@@ -371,7 +369,7 @@ public class Launcher {
     // if the formation has an elastic ip (which is optional)
     // we associate this ip with the instance we created before
     String elasticIp = machine.getElasticIp();
-    if (elasticIp != null && !elasticIp.equals("")) //$NON-NLS-1$
+    if (elasticIp != null && !elasticIp.equals(""))
       this.ec2Client.associate(instanceId, elasticIp);
   }
 
@@ -460,8 +458,8 @@ public class Launcher {
     properties.put(Variable.IMAGE_NAME, container.getImage());
     properties.put(Variable.CONFIG_KEY, container.getConfig());
     properties.put(Variable.TARBALL_NAME, container.getTarballFileName());
-    properties.put(Variable.CONFIG_FOLDER, HOME
-        + "/config-" + container.getTarballName() + "-" + index); //$NON-NLS-1$ //$NON-NLS-2$ 
+    properties.put(Variable.CONFIG_FOLDER, HOME + "/config-" + container.getTarballName() + "-"
+        + index);
     properties.put(Variable.HOME_DIRECTORY, HOME);
 
     if (container.hasCredential()) {
@@ -520,30 +518,30 @@ public class Launcher {
    */
   private void runSetup(DBInstance dbInstance, Database database) {
     String setup = database.getSetup();
-    String buildFilePath = new LocaleRepository().getLocation() + SLASH + setup + "/build.xml"; //$NON-NLS-1$
+    String buildFilePath = new LocaleRepository().getLocation() + SLASH + setup + "/build.xml";
     Endpoint endpoint = dbInstance.getEndpoint();
     File buildFile = new File(buildFilePath);
 
-    this.console.write("Run database setup " + buildFilePath); //$NON-NLS-1$
-    this.console.write("Endpoint " + endpoint); //$NON-NLS-1$
+    this.console.write("Run database setup " + buildFilePath);
+    this.console.write("Endpoint " + endpoint);
 
     Project project = new Project();
     project.setUserProperty(Variable.ANT_FILE, buildFile.getAbsolutePath());
     project.setUserProperty(Variable.DEST_ROOT_LOCAL, new LocaleRepository().getLocation() + SLASH
-        + "tmp"); //$NON-NLS-1$ 
+        + "tmp");
     project.setUserProperty(Variable.DB_SERVER, endpoint.getAddress());
     project.setUserProperty(Variable.DB_PORT, endpoint.getPort().toString());
     project.setUserProperty(Variable.DB_USER, database.getUsername());
     project.setUserProperty(Variable.DB_PASSWORD, database.getPassword());
-    project.setUserProperty(Variable.ENV_NLS_LANG, "American_America.UTF8"); //$NON-NLS-1$ 
-    project.setUserProperty(Variable.HEADLESS, "true"); //$NON-NLS-1$
+    project.setUserProperty(Variable.ENV_NLS_LANG, "American_America.UTF8");
+    project.setUserProperty(Variable.HEADLESS, "true");
     project.init();
 
     DefaultLogger consoleLogger = createConsoleLogger();
     project.addBuildListener(consoleLogger);
 
     ProjectHelper helper = ProjectHelper.getProjectHelper();
-    project.addReference("ant.projectHelper", helper); //$NON-NLS-1$
+    project.addReference("ant.projectHelper", helper);
     helper.parse(project, buildFile);
     project.executeTarget(project.getDefaultTarget());
 

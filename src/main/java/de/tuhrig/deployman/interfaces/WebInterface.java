@@ -35,6 +35,10 @@ import de.tuhrig.deployman.repo.FormationRepository;
 import de.tuhrig.deployman.repo.ImageRepository;
 import de.tuhrig.deployman.repo.SetupRepository;
 
+/**
+ * This class launches the web interface of DeployMan. It defines all routes to request data as
+ * JSON.
+ */
 public class WebInterface // NO_UCD (unused code)
 {
   private static final Logger log = Logger.getLogger(WebInterface.class.getName());
@@ -42,6 +46,7 @@ public class WebInterface // NO_UCD (unused code)
 
   @SuppressWarnings("nls")
   public static void main(String[] args) throws IOException {
+
     // load the initial config first
     DeployMan.readSystemProperties();
 
@@ -56,17 +61,13 @@ public class WebInterface // NO_UCD (unused code)
     // get and set the web root folder where the static
     // files (HTML, JS and CSS) are located
     String webRoot = DeployMan.getSystemProperty(SYSTEM_WEB_ROOT);
+
     log.info("Web root folder = " + webRoot);
+
     externalStaticFileLocation(webRoot);
 
     before(new BasicAuthenticationFilter("/*", new AuthenticationDetails(
         getSystemProperty(SYSTEM_WEB_USER), getSystemProperty(SYSTEM_WEB_PASSWORD))));
-
-    //
-    //
-    // Instances
-    //
-    //
 
     get("/instances", (request, response) -> {
 
@@ -103,12 +104,6 @@ public class WebInterface // NO_UCD (unused code)
       return gson.toJson(new CloudInitScript("").getInitScript(name));
     });
 
-    //
-    //
-    // Jobs
-    //
-    //
-
     get("/jobs", (request, response) -> {
 
       return gson.toJson(LaunchJobStore.getJobs());
@@ -119,12 +114,6 @@ public class WebInterface // NO_UCD (unused code)
       String id = request.params(":id");
       return gson.toJson(LaunchJobStore.getJob(id));
     });
-
-    //
-    //
-    // Docker
-    //
-    //
 
     get("/docker/:instance/containers/:container", (request, response) -> {
 
@@ -177,12 +166,6 @@ public class WebInterface // NO_UCD (unused code)
       return new DockerRemoteClient().getLogOfContainer(instanceId, containerId);
     });
 
-    //
-    //
-    // Repo
-    //
-    //
-
     get("/repo/locale/settings", (request, response) -> {
 
       return gson.toJson(DeployMan.readUserProperties().entrySet());
@@ -207,14 +190,11 @@ public class WebInterface // NO_UCD (unused code)
     get("/repo/locale/formations/:file/run", (request, response) -> {
 
       String file = request.params(":file");
-
       LaunchJob launchJob = LaunchJobStore.createNewJob();
       launchJob.launch(file);
-
-      // response.redirect("/#/jobs-view/" + launchJob.getId());
-        response.redirect("/#/jobs-view");
-        return "launching...";
-      });
+      response.redirect("/#/jobs-view");
+      return "launching...";
+    });
 
     get("/repo/remote/configs", (request, response) -> {
 

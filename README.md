@@ -1,10 +1,10 @@
 # DeployMan
 
-DeployMan is a command line tool to deploy [Docker images](https://www.docker.com) to [Amazon Web Services](http://aws.amazon.com). 
+DeployMan is a command line tool to deploy [Docker images](https://www.docker.com) to [Amazon Web Services](http://aws.amazon.com).
 
 **Note:** DeployMan is an experimental prototyp created for my master thesis about *porting an enterprise OSGi application to a PaaS*. It is not production-ready and was used for academic reasearch solomly. However, sharing what I did will maybe help others and shoult be the purpose of all academic work. Enjoy.
 
-For more information see: [www.tuhrig.de](www.tuhrig.de)
+For more information visit [www.tuhrig.de](www.tuhrig.de).
 
 ## Features
 
@@ -245,34 +245,106 @@ After the formation file was run, we have an EC2 instance on IP `11.22.33.44` wi
 
 ## Variables 
 
-DeployMan supports a set of variables inside of formation files and its internal Bash scripts (see development section). All available variabls are:
+DeployMan supports a set of variables inside formation files and its internal Bash scripts (see development section). Those variables can be referenced by `{{variable}}` and will be replaced with their according values during runtime. Some variables are created dynamically during the execution of a formation (e.g. the path of the configuration folder in `config.folder`). Others are static, like the SSH key (`ec2.instance.key`) specified in the configuration of DeployMan. The variables will also be available in ANT-scripts started by a formation.
 
-    image.key // full qualified key of the image 
-    image.name // short name of the image
-    
-    config.key // full qualified key of the config
-    config.folder // short name of the config folder
-    
-    home.directory // home directory on the Linux machine
-    
-    info.timestamp // timestamp when the script was send
-    info.host // host which started the machine
-    info.formation // the JSON form of the started formation
-    info.containers // number of deployed containers
+All available variables:
 
-    log.deployment // location of the logfile of the deployment
-    log.docker // location of the logfile of docker
+    ==========================================
+    Created dynamically
+    ==========================================
+ 
+    tarball.key
+    |--> full path of the tarball, e.g. images/elasticsearch.tar
+    
+    tarball.name
+    |--> file name of the tarball, e.g. elasticsearch.tar
 
-DeployMan will also resolve the following variables for the database setup (this means, that those variable can be used in ANT scripts and will be available during runtime):
+    image.name 
+    |--> name of the image, e.g. dockerfile/nginx
+    
+    config.key
+    |--> full qualified key of the config, e.g. configs/UI-Nginx
+
+    config.folder
+    |--> path of the config folder, e.g. /home/ubuntu/config--0
+    
+    home.directory
+    |--> home directory on the Linux machine, e.g. /home/ubuntu
+    
+    info.timestamp
+    |--> timestamp when the script was send, e.g. 2014-07-29-10-11-09
+
+    info.host
+    |--> host which started the machine, e.g. DEW182187
+
+    info.formation
+    |--> the JSON of the started formation, e.g. {....}
+
+    info.containers
+    |--> number of deployed containers, e.g. 3
+
+    log.deployment
+    |--> location of the logfile of the deployment, e.g. /home/ubuntu/deployman.log
+
+    log.docker
+    |--> location of the logfile of docker, e.g. /home/ubuntu/docker.log
 
     ant.file
+    |--> 
+
     dest.root.local
+    |--> 
+
     db.default.server
+    |--> 
+
     db.default.port
+    |--> 
+
     db.default.user
+    |--> 
+
     db.default.password
+    |--> 
+
     env.NLS_LANG
+    |--> 
+
     headless
+    |--> 
+
+
+    ==========================================
+    From the configuration
+    ==========================================
+
+    accessKey
+    |--> the AWS access key, e.g. XXXXX
+
+    secretKey = YYYY
+    |--> the AWS secret key, e.g. XXXXX
+
+    aws.region
+    |--> the AWS region, e.g. us-west-2
+
+    ssh.key
+    |--> the local SSH key, e.g. C:/Users/tuhrig/Desktop/docker-key.pem
+
+    ec2.instance.key
+    |--> the name of the SSH key on AWS, e.g. docker-key
+
+    repo.locale
+    |--> the path of the local repository, e.g. C:/Users/tuhrig/Desktop/AWSRepo
+
+    repo.bucket
+    |--> Name of the S3 bucket, e.g. docker-images
+
+    repo.profile
+    |--> Name of the security profil, e.g. docker-profile
+
+    repo.role
+    |--> Name of the security role, e.g. docker-image
+
 
 # Development
 
@@ -288,12 +360,15 @@ All variables are written between double curly braces - `{{VARIABLE_NAME}}``. He
 
 If this script is loaded with `CloudInitScript` the variables (`{{aws.region}}`, `{{repo.bucket}}` and so on) will be replaced by the appropriate values. Some values are taken from the Deploy-Man configuration file, others from the formation file and others are created dynamically.
 
+# Screenshots
+
+![](screenshots/Run_Logstash_Server.png)
+
 # License
 
 ## Simplified BSD License
 
 [http://opensource.org/licenses/bsd-license.php](http://opensource.org/licenses/bsd-license.php)
- | [www.tuhrig.de](www.tuhrig.de)
 
 Copyright (c) 2014, Thomas Uhrig
 All rights reserved.

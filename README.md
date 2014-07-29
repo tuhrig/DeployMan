@@ -362,7 +362,17 @@ If this script is loaded with `CloudInitScript` the variables (`{{aws.region}}`,
 
 # Screenshots
 
+> The command line interface showing formations and output after starting a Logstash node. You can see the IP and DNS name of the running instance.
+
 ![](screenshots/Run_Logstash_Server.png)
+
+> The web interface showing an overview of all running machines on AWS. This is the same what you can see when you log-in to the Amazon Web Console.
+
+![](screenshots/Machine_Overview.png)
+
+> The web interface showing a detailed view for the Logstash node. You can see details to the machine as well as all deployed Docker images and running containers.
+
+![](screenshots/Machine_Details.png)
 
 # License
 

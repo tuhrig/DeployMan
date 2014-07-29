@@ -360,6 +360,10 @@ All available variables:
 
 # Development
 
+## Formatting
+
+All source code files are formatted according to the **Google Java Style Guide**. See [https://code.google.com/p/google-styleguide](https://code.google.com/p/google-styleguide) for more information and to download predefined settings for your IDE. The settings for Eclipse are included in this project (import `eclipse-java-google-style.xml`).
+
 ## Cloud-Init and bash scripts
 
 Deploy-Man initializes EC2 cloud instances with Cloud-Init. Cloud-Init is an Ubuntu tool used to create cloud instaces. It supports an own declarative syntax as well as bash or Python. Deploy-Man uses bash.

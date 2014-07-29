@@ -26,7 +26,7 @@ Run the command line interface (an interactive shell) by:
     java -jar Deploy-Man-Cli.jar
 
 
-Run the web interface  on http://localhost:4567 by:
+Run the web interface  on [http://localhost:4567](http://localhost:4567) by:
 
 	java -jar Deploy-Man-Web.jar
 
@@ -85,7 +85,19 @@ And run:
 
     init
 
-Now you have the basic folder structure to use DeployMan.
+Now you have the basic folder structure to use DeployMan. The local folders should look like this:
+
+    DEPLOYMAN_FOLDER/
+    |------------- configs/
+    |------------- formations/
+    |------------- images/
+    |------------- setups/
+
+The folders in your S3 bucket should look like this:
+
+    DEPLOYMAN_BUCKET/
+    |------------- configs/
+    |------------- images/
 
 ### 3. Create a formation
 
@@ -293,25 +305,25 @@ All available variables:
     |--> 
 
     dest.root.local
-    |--> 
+    |-->
 
     db.default.server
     |--> 
 
     db.default.port
-    |--> 
+    |--> A port, e.g. 1501
 
     db.default.user
-    |--> 
+    |--> A user, e.g. Joe
 
     db.default.password
-    |--> 
+    |--> A password, e.g. 123456
 
     env.NLS_LANG
     |--> 
 
     headless
-    |--> 
+    |--> true or false
 
 
     ==========================================
